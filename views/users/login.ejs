@@ -1,0 +1,20 @@
+<%include ("../layouts/header.ejs") %>
+
+<h1>Login</h1>
+
+
+<%  if(typeof message !=='undefined'){ %>
+    <p>  <%=message%> </p>
+    <%}%>
+
+
+<form action="/login" method="post">
+    <input type="text" name="email" placeholder="Enter Email" required>
+    <br> <br>
+    <input type="password" name="password" placeholder="Enter Password" required>
+    <br> <br>
+    <input type="submit" value="Login">
+
+</form>
+
+<%include("../layouts/footer.ejs")%>

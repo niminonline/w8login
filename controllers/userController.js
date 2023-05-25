@@ -2,6 +2,7 @@
 const User= require("../models/userModel");
 const bcrypt= require("bcrypt");
 
+
 //=====================Registration=======================
 const securePassword= async(password)=>{
     try{
@@ -71,6 +72,8 @@ const verifyLogin = async(req,res)=>{
        const passwordMatch= await bcrypt.compare(password,userData.password);
 
        if(passwordMatch){
+        req.session.user_id= userData._id;
+        console.log("SessionID2:"+req.session.user_id);
         res.redirect("/home");
 
 
@@ -101,4 +104,20 @@ const loadHome= async (req,res)=>{
     }
 }
 
-module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome}
+//=====================Logout==============================
+
+const userLogout = async(req,res,next)=>{
+    try{
+        req.session.destroy();
+        res.redirect("/"); 
+        
+    }
+    
+    catch(err){
+        console.log(err.message);
+    }
+}
+
+
+
+module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout}

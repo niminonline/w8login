@@ -9,6 +9,10 @@ const app= express();
 const userRoute=require("./routes/userRoute");
 app.use("/",userRoute);
 
+//Admin route
+const adminRoute=require("./routes/adminRoute");
+app.use("/admin",adminRoute);
+
 
 app.listen(3000,()=>{console.log("Server is running on port 3000 => http://localhost:3000/")} )
 

@@ -6,6 +6,7 @@ const path= require("path");
 user_route.set("view engine","ejs");
 user_route.set("views",__dirname+"/../views/users/");
 user_route.use(bodyParser.urlencoded({extended:true}))
+user_route.use(express.static("public"));
 const userController = require("../controllers/userController");
 const { model } = require("mongoose");
 const config= require("../config/config");
@@ -28,6 +29,8 @@ user_route.get("/", auth.isLogin,userController.loginLoad);
 user_route.post("/login", userController.verifyLogin);
 user_route.get("/home",auth.isLogout, userController.loadHome);
 user_route.get("/logout",auth.isLogout, userController.userLogout);
+user_route.get("/edit",auth.isLogout, userController.editProfile);
+user_route.post("/edit",upload.single("image"), userController.update);
 
 module.exports= user_route;
 

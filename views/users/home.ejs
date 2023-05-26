@@ -2,9 +2,29 @@
 
 
 
-<h1> Welcome</h1>
+<h1> Welcome <%= userDetails.name%>...</h1>
 
+<table>
+
+    <tr>
+        <td>  <img src=  "userImages/<%= userDetails.image %> " width="100px" height="100px" alt="Profile pic"> </td>
+    <tr>
+        <th> Email:</th>
+        <td> <%= userDetails.email %> </td>
+    </tr>
+    <tr>
+        <th> Mobile:</th>
+        <td> <%= userDetails.image %> </td>
+    </tr>
+   
+
+</table>
+
+ 
+<a href="/edit?id=<%= userDetails._id %>">Edit </a>
+<br>
 <a href="/logout">Logout</a>
+
 
 
 <%include("../layouts/footer.ejs")%>

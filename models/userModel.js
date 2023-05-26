@@ -24,12 +24,8 @@ const userSchema= mongoose.Schema({
     isAdmin:{
         type:Number,
         required:true
-    },
-    isVerified:{
-        type:Number,
-        default:0
-
     }
+    
 })
 
 module.exports= mongoose.model('User', userSchema);

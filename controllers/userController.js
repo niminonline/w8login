@@ -60,7 +60,7 @@ const loginLoad= async (req,res)=>{
         console.log(err.message);
     }
 }
-
+//===============Verify Login===================
 const verifyLogin = async(req,res)=>{
     try{
         
@@ -93,11 +93,17 @@ const verifyLogin = async(req,res)=>{
     }
 
 }
+//=====================User Home Page===================
+
 const loadHome= async (req,res)=>{
+
+    const userData= await User.findOne({_id: req.session.user_id});
+            
    
     try{
+
         
-        res.render("home");
+        res.render("home",{userDetails:userData});
     }
     catch(err){
         console.log(err.message);
@@ -118,6 +124,42 @@ const userLogout = async(req,res,next)=>{
     }
 }
 
+//===========================Edit Profile=================//
+const editProfile= async(req,res)=>{
+
+    try{
+            const id= req.query.id;
+            const userData= await User.findById({_id:id});
+
+        if(userData){
+           res.render("edit",{user:userData})
+        }
+        else{
+            res.redirect("/home")
+        }
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+//=========================Update profile===============//
+const update = async(req,res)=>{
+
+    try{
+        if(req.file){
+            const userdate=  await User.findByIdAndUpdate({_id:req.body.user_id},{$set:{name: req.body.name,email: req.body.email,mobile:req.body.mobile,image:req.file.filename }})
+        }    
+        else
+        {
+            const userdate=  await User.findByIdAndUpdate({_id:req.body.user_id},{$set:{name: req.body.name,email: req.body.email,mobile:req.body.mobile }})
+        }
+        res.redirect("/home")
+    }
+    catch(err){
+        console.log(err.message);
+    }
+
+}
 
 
-module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout}
+module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout,editProfile,update}

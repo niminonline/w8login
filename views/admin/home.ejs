@@ -3,6 +3,17 @@
 
 <h1>Admin Dashboard</h1>
 
+<form >
+    <input type="text" placeholder="Search name or email or phone number" name="search">
+    <input type="submit" value="Search">
+</form>
+
+
+<%userData.forEach(item=>{%>
+
+    <p><%=item.name%></p>
+
+    <%})%>
 
 
 <br><br>

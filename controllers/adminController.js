@@ -53,7 +53,21 @@ const verifyLogin = async(req,res)=>{
 const adminDashboard= async(req,res)=>{
 
     try{
-        res.render("home");
+        let search='';
+        if(req.query.search){
+            search= req.query.search;
+
+        }
+        const userData= await User.find({
+            isAdmin:0,
+            $or:[
+                {name:{$regex:".*"+search+".*",$options:"i"}},
+                {email:{$regex:".*"+search+".*"}},
+                {mobile:{$regex:".*"+search+".*"}},
+            ]
+        });
+        res.render("home",{userData:userData});
+        
     }
     catch(err){
         console.log(err.message);

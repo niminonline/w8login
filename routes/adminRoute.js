@@ -17,6 +17,7 @@ admin_route.get("/login",auth.isAdminLogin, adminController.adminLogin)
 admin_route.get("/home",auth.isAdminLogout,adminController.adminDashboard)
 admin_route.post("/login",adminController.verifyLogin)
 admin_route.get("/logout",adminController.logout)
+admin_route.get("/adduser",adminController.loadAddUser)
 // admin_route.get("*",(req,res)=>{
 //     res.redirect("/admin");
 // })

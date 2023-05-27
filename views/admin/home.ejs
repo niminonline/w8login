@@ -1,27 +1,28 @@
 
-<% include("../layouts/header.ejs") %>
+<%- include("../layouts/header.ejs") %>
 
 <h1>Admin Dashboard</h1>
 
 <form >
     <input type="text" placeholder="Search name or email or phone number" name="search">
-    <input type="submit" value="Search">
+    <input type="submit" value="Search" class="btn btn-secondary">
 </form>
 
 
+<% if(userData==""){ %> <p>No results found</p> <%}else{%>
 <%userData.forEach(item=>{%>
-
+    
     <p><%=item.name%></p>
 
-    <%})%>
+    <%}) }%>
 
 
 <br><br>
+<a href="/admin/adduser" class="btn btn-primary">Add User</a>
+<a href="/admin/logout" class="btn btn-primary">Logout</a>
 
-<a href="/admin/logout" >Logout</a>
 
-
-<% include("../layouts/footer.ejs") %>
+<%- include("../layouts/footer.ejs") %>
 
 
 

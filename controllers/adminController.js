@@ -62,8 +62,8 @@ const adminDashboard= async(req,res)=>{
             isAdmin:0,
             $or:[
                 {name:{$regex:".*"+search+".*",$options:"i"}},
-                {email:{$regex:".*"+search+".*"}},
-                {mobile:{$regex:".*"+search+".*"}},
+                {email:{$regex:".*"+search+".*",$options:"i"}},
+                {mobile:{$regex:".*"+search+".*",$options:"i"}},
             ]
         });
         res.render("home",{userData:userData});
@@ -74,7 +74,7 @@ const adminDashboard= async(req,res)=>{
     }
 }
 
-//==========================Logout======================================//
+//======================================Logout======================================//
 
 const logout = async(req,res)=>{
     try{
@@ -87,5 +87,29 @@ const logout = async(req,res)=>{
         console.log(err.message);
     }
 }
+//===================================Add User============================//
 
-module.exports= {adminLogin, verifyLogin,adminDashboard, logout}
+const loadAddUser = async(req,res)=>{
+
+    try{
+
+        res.render("adduser");
+    }
+    catch(err){
+        console.log(err.message);
+    }
+
+}
+
+const addUser= async(req,res)=>{
+    try{
+
+
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
+
+module.exports= {adminLogin, verifyLogin,adminDashboard, logout,loadAddUser,addUser}

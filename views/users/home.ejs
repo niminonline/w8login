@@ -14,16 +14,14 @@
     </tr>
     <tr>
         <th> Mobile:</th>
-        <td> <%= userDetails.image %> </td>
+        <td> <%= userDetails.mobile %> </td>
     </tr>
-   
-
 </table>
+<a href="/edit?id=<%= userDetails._id%>" class="btn btn-primary">Edit </a>
 
- 
-<a href="/edit?id=<%= userDetails._id %>">Edit </a>
-<br>
-<a href="/logout">Logout</a>
+<a href="/changepassword?id=<%=userDetails._id%>" class="btn btn-primary"> Change Password</a>
+<br><br>
+<a href="/logout" class="btn btn-danger">Logout</a>
 
 
 

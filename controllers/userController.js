@@ -3,7 +3,7 @@ const User= require("../models/userModel");
 const bcrypt= require("bcrypt");
 
 
-//=====================Registration=======================
+//=====================Registration page Load=======================
 const securePassword= async(password)=>{
     try{
         const passwordHash= await bcrypt.hash(password,10);
@@ -22,7 +22,7 @@ const loadRegister =(req,res)=>{
         console.log(error.message)
     }
 }
-
+//==========================Register User=====================
 const insertUser= async(req,res)=>{
     try{
         const spassword= await securePassword(req.body.password);
@@ -67,7 +67,6 @@ const verifyLogin = async(req,res)=>{
        const email= req.body.email;
        const password= req.body.password;
        const userData= await User.findOne({email:email});
-
        if(userData){
        const passwordMatch= await bcrypt.compare(password,userData.password);
 
@@ -96,13 +95,9 @@ const verifyLogin = async(req,res)=>{
 //=====================User Home Page===================
 
 const loadHome= async (req,res)=>{
-
     const userData= await User.findOne({_id: req.session.user_id});
             
-   
     try{
-
-        
         res.render("home",{userDetails:userData});
     }
     catch(err){
@@ -160,6 +155,57 @@ const update = async(req,res)=>{
     }
 
 }
+//===================Load Change password Page================================//
+const loadChangePassword= async(req,res)=>{
+
+    try{
+        const message="";
+        const id=req.query.id;
+       res.render("changepassword",{data:{_id:id,message:""}});
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
+//=================== Change password ================================//
+const changePassword= async(req,res)=>{
+    try{
+        const id= req.body.id;
+        const oldPassword= req.body.oldPassword;
+        const newPassword= req.body.newPassword;
+        const confirmPassword= req.body.confirmPassword;
+
+        const userData= await User.findOne({_id:id});
+        console.log(userData);
+        if(userData){
+            console.log("stored pass "+ userData.password);
+            if( await bcrypt.compare(oldPassword,userData.password)){
+                if(newPassword===confirmPassword){
+                  
+                    const secPassword= await bcrypt.hash(newPassword,10);
+                    if(secPassword){
+                        await User.updateOne({_id:id},{$set:{password:secPassword}});
+                        res.redirect("home");
+                    }
+                    else{
+                    res.render("changepassword",{data:{_id:id,message:"Password updation failed"}});
+                    }
+                }
+                else{
+                    res.render("changepassword",{data:{_id:id,message:"New password and confirm password doesn't match"}});
+                }
+                
+            }
+            res.render("changepassword",{data:{_id:id,message:"Old password is wrong"}});
+        }
+        res.render("changepassword",{data:{_id:id,message:"db fetch failed"}});
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
 
 
-module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout,editProfile,update}
+
+module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout,editProfile,update,loadChangePassword,changePassword}

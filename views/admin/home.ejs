@@ -13,7 +13,8 @@
 <%userData.forEach(item=>{%>
     
     <p><%=item.name%></p>
-
+    <a href="/admin/useredit?id=<%=item._id%>" class="btn btn-primary">Edit</a>
+    <a href="/admin/removeuser?id=<%=item._id%>" class="btn btn-primary">Remove</a>
     <%}) }%>
 
 

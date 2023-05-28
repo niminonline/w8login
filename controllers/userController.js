@@ -109,7 +109,8 @@ const loadHome= async (req,res)=>{
 
 const userLogout = async(req,res,next)=>{
     try{
-        req.session.destroy();
+        delete req.session.user_id
+        // req.session.destroy();
         res.redirect("/"); 
         
     }

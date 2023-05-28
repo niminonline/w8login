@@ -30,7 +30,7 @@ const verifyLogin = async(req,res)=>{
                     res.render("login",{message: "Invalid Credentials"})
                 }
                 else{
-                    req.session.user_id= adminData._id;
+                    req.session.admin_id= adminData._id;
                     res.redirect("/admin/home");
                 }
             }
@@ -79,7 +79,8 @@ const adminDashboard= async(req,res)=>{
 
 const logout = async(req,res)=>{
     try{
-        req.session.destroy();
+        delete req.session.admin_id;
+        // req.session.destroy();
         res.redirect("/admin");
 
     }

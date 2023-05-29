@@ -20,43 +20,52 @@
 </div>
 
 
-<% if(userData==""){ %> <h5 class="text-center text-white">No results found</h5> <%}else{%>
-<%userData.forEach(item=>{%>
+<% if(userData==""){ %>
+     <h5 class="text-center text-white">No results found</h5>
+      <%}else{%>
 
-    <div class="card-container d-flex  flex-wrap bg-danger">
-        <div class="card m-4 " style="width: 18rem;" >
-            <%if(!item.image){%>
-                <img src=  "userImages/user.jpeg" class="card-img-top"  alt="Profile pic" width="150" height="150"> </td>
-           <% }else{ %> 
-            <img src=  "userImages/<%= item.image %> " class="card-img-top"  alt="Profile pic" width="150" height="150"> </td>
-            <%} %>
-            <div class="card-body ">
-            <table>
-                       <tr >
-                        <th > Name:</th>
-                        <td><%= item.name%> </td>
-                                </tr>
-                                <tr>
-                        <th> Email:</th>
-                        <td> <%= item.email %> </td>
-                                </tr>
-                                <tr>
-                        <th> Mobile:</th>
-                        <td> <%= item.mobile %> </td>
-                                </tr>
+        <div class="userlistcontainer d-flex flex-wrap  align-self-start">
+
+       <% userData.map(item=>{ %>
+            <div class=" card m-4 " style="width: 18rem;">
+
+                <%if(!item.image){%>
+                    <img src=  "userImages/user.jpeg" class="card-img-top"  alt="Profile pic" wwidth="200px" height="200px"> </td>
+               <% }else{ %> 
+
+                <img src=  "userImages/<%= item.image %> " class="card-img-top" width="200px" height="200px" alt="Profile pic"> </td>
+              <% }%>
+               <div class="card-body">
+                <table>
+                           <tr >
+                            <th > Name:</th>
+                            <td><%= item.name%> </td>
+                                    </tr>
+                                    <tr>
+                            <th> Email:</th>
+                            <td> <%= item.email %> </td>
+                                    </tr>
+                                    <tr>
+                            <th> Mobile:</th>
+                            <td> <%= item.mobile %> </td>
+                                    </tr>
+                                </table>
+                      
+
+                        <div class="text-center my-2">
         
+                            <a href="/admin/useredit?id=<%=item._id%>" class="btn btn-primary">Edit</a>
+                            <a href="/admin/removeuser?id=<%=item._id%>" class="btn btn-primary">Remove</a>
+                    
+                        </div>
                     </div>
-            </table>
-            <div class="text-center my-2">
-        
-                <a href="/admin/useredit?id=<%=item._id%>" class="btn btn-primary">Edit</a>
-                <a href="/admin/removeuser?id=<%=item._id%>" class="btn btn-primary">Remove</a>
-        
-            </div>
-        
-        </div>
+                        </div>
+            
+       <% })%>
+
     </div>
-    <%}) }%>
+    <% }%>
+
     
     
 

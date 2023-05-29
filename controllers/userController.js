@@ -13,6 +13,8 @@ const loadRegister =(req,res)=>{
     catch(error){
         console.log(error.message)
     }
+
+
 }
 //==========================Register User=====================
 const securePassword= async(password)=>{
@@ -24,49 +26,11 @@ const securePassword= async(password)=>{
         console.log(error.message)
     }
 }
-let displayMessage="";
-let passwordMatchChk= false;
-    passwordMatchChk=(password1,password2)=>{
-    if(password1===password2){
-        return true;
-    }
-    else{
-        displayMessage="Passwords doesn't match";
-        return false;
-    }
-}
-let passwordLengthChk =false;
-    passwordLengthChk= (password)=>{
-    if((password.toString().length)>=8){
-        return true;
-    }
-    else{
-        displayMessage="Password must contain atleast 8 characters";
-        return false;
-    }
-}
-let phoneValidationChk= false;
-    phoneValidationChk= (phone)=>{
-    if((phone.toString().length)==10){
-        return true;
-    }
-    else{
-        displayMessage="Invalid mobile number";
-        return false;
-    }
-}
-
-
 
 
 const insertUser= async(req,res)=>{
     try{
-        const isPasswordMatch=passwordMatchChk(req.body.password,req.body.confirmPassword);
-        const isPasswordLength= passwordLengthChk(req.body.password);
-        const isPhoneValidation= phoneValidationChk(req.body.email);
-
-        console.log("passmatch: "+isPasswordMatch+" || passLength: "+isPasswordLength+"|| phoneval: "+isPhoneValidation);
-        if(isPasswordLength&&isPasswordMatch&&isPhoneValidation){    
+        
         const spassword= await securePassword(req.body.password);
         const user=  new User({
             name: req.body.name,
@@ -84,11 +48,7 @@ const insertUser= async(req,res)=>{
             res.render("registration", {message:"Registration Failed"});
 
         }
-         }
         
-        else{
-            res.render("registration", {message:displayMessage});
-        }
     }
     
     catch(err){

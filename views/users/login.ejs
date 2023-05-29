@@ -1,20 +1,33 @@
 <%- include ("../layouts/header.ejs") %>
 
-<h1>Login</h1>
-
-
-<%  if(typeof message !=='undefined'){ %>
-    <p>  <%=message%> </p>
-    <%}%>
-
-
-<form action="/login" method="post">
-    <input type="text" name="email" placeholder="Enter Email" required>
-    <br> <br>
-    <input type="password" name="password" placeholder="Enter Password" required>
-    <br> <br>
-    <input type="submit" value="Login">
-
-</form>
+<div class="card myCard-center">
+    <h1 class="card-header">Login</h1>
+    
+    <div class="card-body">
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" name="email" placeholder="Enter Email" required>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Enter Password" required>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="two-buttons text-center">
+                    <input type="submit" class="btn btn-primary" value="Login">
+                    <a href="/register" class="btn btn-primary">Sign up</a>
+                </div>
+            </div>
+        
+        </form>
+        <%  if(typeof message !=='undefined'){ %>
+            <p>  <%=message%> </p>
+            <%}%>
+        
+        </div>
+    </div>
 
 <%- include("../layouts/footer.ejs")%>

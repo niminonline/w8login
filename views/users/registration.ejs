@@ -1,26 +1,59 @@
 <%- include("../layouts/header.ejs")%>
 
-<h1>User Registration</h1>
+<div class="card myCard-center ">
+<h1 class="card-header">Sign up</h1>
+
+<div class="card-body">
 
 <form action="" method="post" enctype="multipart/form-data">
-    <input type="text" name="name" placeholder="Enter Name" required>
-    <br> <br>
-    <input type="text" name="email" placeholder="Enter Email" required>
-    <br> <br>
-    <input type="text" name="mobile" placeholder="Enter Mobile Number" required>
-    <br> <br>
-    <input type="password" name="password" placeholder="Enter Password" required>
-    <br> <br>
-    <input type="file" name="image" required >
-    <br> <br>
-    <input type="submit" value="Register">
+
+<div class="form-group">
+  <label for="name">Name</label>
+  <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
+</div> 
+<br>
+<div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" class="form-control" name="email" placeholder="Enter Email" required>
+ </div> 
+ <br>
+ <div class="form-group">
+      <label for="mobile">Mobile Number</label>
+      <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile Number" required>
+</div> 
+<br>
+<div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Enter Password" required>
+</div> 
+<br>
+<div class="form-group">
+    <label for="confirmpassword">Confirm Password</label>
+    <input type="password" class="form-control" name="confirmpassword" placeholder="Re-enter Password" required>
+</div> 
+<br>
+<div class="form-group">
+    <label for="image">Profile Image</label>
+    <input type="file" class="form-control" name="image" required >
+</div> 
+<br>
+
+
+<div class="form-group">
+    <div class="two-buttons text-center">
+      <input type="submit" class="btn btn-primary" value="Register">
+      <a href="/home" class="btn btn-primary">Cancel</a>
+    </div>
+  </div> 
+
 </form>
 
 
   <%  if(typeof message !=='undefined'){ %>
     <p>  <%=message%> </p>
     <%}%>
-
+  </div>
+  </div>
 
 
 

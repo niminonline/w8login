@@ -2,30 +2,46 @@
 
 
 
-<h1> Welcome <%= userDetails.name%>...</h1>
+<div class="headSection d-flex justify-content-between align-items-center border-bottom my-2 py-2">
+    <h2> 🏠 User home</h2>
+    <a href="/logout" class="btn btn-danger">Logout</a>
+</div>
 
-<table>
 
-    <tr>
-        <td>  <img src=  "userImages/<%= userDetails.image %> " width="100px" height="100px" alt="Profile pic"> </td>
-    <tr>
-        <th> Name:</th>
-        <td><%= userDetails.name%> </td>
-    </tr>
-    <tr>
-        <th> Email:</th>
-        <td> <%= userDetails.email %> </td>
-    </tr>
-    <tr>
-        <th> Mobile:</th>
-        <td> <%= userDetails.mobile %> </td>
-    </tr>
-</table>
-<a href="/edit?id=<%= userDetails._id%>" class="btn btn-primary">Edit </a>
+<div class="card my-4" style="width: 18rem;" my-3>
 
-<a href="/changepassword?id=<%=userDetails._id%>" class="btn btn-primary"> Change Password</a>
-<br><br>
-<a href="/logout" class="btn btn-danger">Logout</a>
+    <img src=  "userImages/<%= userDetails.image %> " class="card-img-top"  alt="Profile pic"> </td>
+       
+    <div class="card-body ">
+    <table>
+        
+
+                <tr >
+                <th > Name:</th>
+                <td><%= userDetails.name%> </td>
+                        </tr>
+                        <tr>
+                <th> Email:</th>
+                <td> <%= userDetails.email %> </td>
+                        </tr>
+                        <tr>
+                <th> Mobile:</th>
+                <td> <%= userDetails.mobile %> </td>
+                        </tr>
+                        
+            </div>
+    </table>
+    <div class="text-center d-flex justify-content-between my-2">
+        <a href="/edit?id=<%= userDetails._id%>" class="btn btn-primary mx-1">Edit </a>
+        
+        
+        <a href="/changepassword?id=<%=userDetails._id%>" class="btn btn-primary"> Change Password</a>
+    </div>
+    
+</div>
+
+
+
 
 
 

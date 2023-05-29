@@ -9,6 +9,7 @@ const auth= require("../middleware/auth");
 admin_route.set("view engine","ejs");
 admin_route.set("views","views/admin");
 
+admin_route.use(express.static("public"));
 admin_route.use(bodyParser.urlencoded({extended:true}));
 admin_route.use(session({secret:config.sessionSecret,resave:false,saveUninitialized:false}));
 

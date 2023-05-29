@@ -1,26 +1,27 @@
 <%- include("../layouts/header.ejs") %>
 
-
-<h1>Edit User</h1>
-
-
-
-<form action="" method="post">
-    <input type="hidden" name="id" value="<%=userData._id%>">
-    <p>User Name:</p><input type="text" name="name" value="<%=userData.name%>" placeholder="Enter new name" required>
-    <br><br>
-
-    <p>Email:</p><input type="email" name="email" value="<%=userData.email%>" placeholder="Enter new email" required>
-    <br><br>
-    <p>Mobile:</p><input type="text" name="mobile" value="<%=userData.mobile%>" placeholder="Enter new mobile number" required>
-    <br><br>
-    <input type="submit" class="btn btn-primary" value="Update">
-    <a href="/admin/home" class="btn btn-primary">Cancel</a>
-
-    <p><%=message%></p>
-
-
-</form>
+<div class="card myCard-center">
+    <h1 class="card-header" >Edit User</h1>
+    <div class="card-body">
+        <form action="" method="post">
+            <input type="hidden" name="id" value="<%=userData._id%>">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name" value="<%=userData.name%>" placeholder="Enter new name" required>
+            <br>
+            <label for="email">Email</label>
+           <input type="email" class="form-control" name="email" value="<%=userData.email%>" placeholder="Enter new email" required>
+            <br>
+            <label for="mobile">Mobile</label>
+            <input type="text" class="form-control" name="mobile" value="<%=userData.mobile%>" placeholder="Enter new mobile number" required>
+            <br>
+            <input type="submit" class="btn btn-primary" value="Update">
+            <a href="/admin/home" class="btn btn-primary">Cancel</a>
+        
+            <p><%=message%></p>
+        
+        </form>
+    </div>
+</div>
 
 
 

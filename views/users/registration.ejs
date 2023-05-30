@@ -5,11 +5,22 @@
 
 <div class="card-body">
 
-<form action="" method="post" enctype="multipart/form-data">
+  <%if(typeof errors!= 'undefined'){%>
+    <%errors.map(item=>{ %>
+  
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Error:</strong> <%=item.msg%>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+<%})}%>
+
+
+<form action="/register" method="post" enctype="multipart/form-data">
 
 <div class="form-group">
   <label for="name">Name</label>
-  <input type="text" id="nameField" class="form-control" name="name" placeholder="Enter Name" value="xyz" required >
+  <input type="text" id="nameField" class="form-control" name="name" id="name" placeholder="Enter Name"  required >
 </div> 
 <br>
 <div class="form-group">
@@ -42,7 +53,7 @@
 <div class="form-group">
     <div class="two-buttons text-center">
       <input type="submit" class="btn btn-primary" value="Register">
-      <a href="/home" class="btn btn-primary">Cancel</a>
+      <a href="/home" class="btn btn-primary">Back</a>
     </div>
   </div> 
 
@@ -54,6 +65,8 @@
     <%}%>
   </div>
   </div>
+
+
 
 
 

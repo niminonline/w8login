@@ -13,6 +13,8 @@ const session = require("express-session");
 user_route.use(session({secret:config.sessionSecret,resave:false,saveUninitialized:false}));
 const auth= require("../middleware/auth");
 
+
+
 const multer= require("multer");
 const storage= multer.diskStorage({destination:(req,file,cb)=>{cb(null,path.join(__dirname,'../public/userImages'))},
                                     filename:(req,file,cb)=>{
@@ -20,8 +22,46 @@ const storage= multer.diskStorage({destination:(req,file,cb)=>{cb(null,path.join
                                         cb(null, name);
                                     }});
 const upload=multer({storage:storage});
-user_route.get("/register", auth.isLogin, userController.loadRegister);
-user_route.post("/register", upload.single("image"),userController.insertUser);
+
+const {body,validationResult}= require("express-validator");
+const { error } = require("console");
+
+user_route.get('/register', auth.isLogin, userController.loadRegister);
+user_route.post('/register', upload.single("image"),[
+    body("name").trim()
+    .matches(/^[A-Za-z\s]+$/).withMessage("Username cannot contain invalid characters")
+    .isLength({min:3}).withMessage('Name must contain atleat 3 characters'),
+    body("email","Invalid email address")
+    .trim()
+    .normalizeEmail({gmail_remove_dots:false})
+    .isEmail()
+    .custom(async(value)=>{
+        const result=await userController.isEmailExist(value)
+        console.log(result);  
+        if(result){
+            throw new Error("Email already exists");
+        }
+        else{
+            return true
+        }}),
+    body("mobile")
+    .trim()
+    .isNumeric().withMessage('Mobile number contains invalid characters')
+    .isLength({min:10,max:10}).withMessage('Mobile number must contain 10 digits'),
+    body("password")
+    .isLength({min:8}).withMessage("Password must contain atleat 8 characters")
+    // .matches(/[A-Za-z0-9@\.\-_$\*\(\)#@!%].*?/).withMessage("Password must contain numbers and characters")
+    .custom((value,{req})=>{
+        if(value!==req.body.confirmpassword){
+            throw new Error("Passwords do not match");
+        }
+        return true;
+    })
+
+
+],userController.insertUser);
+
+
 user_route.get("/login", auth.isLogin, userController.loginLoad);
 user_route.get("/", auth.isLogin,userController.loginLoad);
 user_route.post("/login", userController.verifyLogin);

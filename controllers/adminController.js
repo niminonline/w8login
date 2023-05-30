@@ -1,5 +1,9 @@
 const User= require("../models/userModel");
 const bcrypt= require("bcrypt");
+const { log } = require("console");
+const fs= require("fs");
+
+
 
 
 //==================Admin Login Page==================
@@ -126,10 +130,28 @@ const addUser= async(req,res)=>{
     }
 }
 //============================Remove User===============================
+
+const removeFile= async (file_name)=>{
+    console.log("To delete- "+file_name);
+    if(fs.existsSync(file_name)){
+        fs.unlinkSync(file_name);
+    }
+    else{
+        console.log("File not found");
+    }
+
+}
+
 const removeUser= async(req,res)=>{
     try{
         const id= req.query.id;
+        const usrData= await User.findOne({_id:id});
+        console.log(usrData.image);
         await User.deleteOne({_id:id});
+        const fileToRemove= "userImages/"+ usrData.image
+        removeFile(fileToRemove);
+        
+        
         res.redirect("/admin/home");
        
     }

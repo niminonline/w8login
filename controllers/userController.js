@@ -1,6 +1,8 @@
 
+const { validationResult } = require("express-validator");
 const User= require("../models/userModel");
 const bcrypt= require("bcrypt");
+
 
 
 //=====================Registration page Load=======================
@@ -30,7 +32,16 @@ const securePassword= async(password)=>{
 
 const insertUser= async(req,res)=>{
     try{
-        
+
+        const valErrors= validationResult(req);
+        if(!valErrors.isEmpty()){
+        //   const errors= valError.array();
+          console.log(valErrors);
+           //    res.status(400).json({valError:errors})
+             res.render("registration",{errors:valErrors.array()})
+
+        }
+        else{
         const spassword= await securePassword(req.body.password);
         const user=  new User({
             name: req.body.name,
@@ -48,6 +59,7 @@ const insertUser= async(req,res)=>{
             res.render("registration", {message:"Registration Failed"});
 
         }
+    }
         
     }
     
@@ -68,7 +80,20 @@ const loginLoad= async (req,res)=>{
         console.log(err.message);
     }
 }
+
+
 //===============Verify Login===================
+
+const isEmailExist = async(enteredEmail)=>{
+    const emailFound= await User.findOne({email:enteredEmail});
+    //console.log(emailFound);
+    if(emailFound){
+        return true;
+    }
+    else
+    return false;
+}
+
 const verifyLogin = async(req,res)=>{
     try{
         
@@ -217,4 +242,5 @@ const changePassword= async(req,res)=>{
 
 
 
-module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout,editProfile,update,loadChangePassword,changePassword}
+module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout,editProfile,update,
+                  loadChangePassword,changePassword,isEmailExist}

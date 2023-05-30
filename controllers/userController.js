@@ -33,6 +33,9 @@ const securePassword= async(password)=>{
 const insertUser= async(req,res)=>{
     try{
 
+
+        
+
         const valErrors= validationResult(req);
         if(!valErrors.isEmpty()){
         //   const errors= valError.array();

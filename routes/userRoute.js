@@ -12,6 +12,7 @@ const config= require("../config/config");
 const session = require("express-session");
 user_route.use(session({secret:config.sessionSecret,resave:false,saveUninitialized:false}));
 const auth= require("../middleware/auth");
+const validate = require("../middleware/validator")
 
 
 
@@ -50,7 +51,6 @@ user_route.post('/register', upload.single("image"),[
     .isLength({min:10,max:10}).withMessage('Mobile number must contain 10 digits'),
     body("password")
     .isLength({min:8}).withMessage("Password must contain atleat 8 characters")
-    // .matches(/[A-Za-z0-9@\.\-_$\*\(\)#@!%].*?/).withMessage("Password must contain numbers and characters")
     .custom((value,{req})=>{
         if(value!==req.body.confirmpassword){
             throw new Error("Passwords do not match");
@@ -68,7 +68,12 @@ user_route.post("/login", userController.verifyLogin);
 user_route.get("/home",auth.isLogout, userController.loadHome);
 user_route.get("/logout",auth.isLogout, userController.userLogout);
 user_route.get("/edit",auth.isLogout, userController.editProfile);
-user_route.post("/edit",upload.single("image"), userController.update);
+user_route.post("/edit",upload.single("image"),[
+    body("email")
+]
+
+
+, userController.update);
 user_route.get("/changepassword",auth.isLogout, userController.loadChangePassword);
 user_route.post("/changepassword",userController.changePassword);
 module.exports= user_route;

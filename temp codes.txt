@@ -1,0 +1,1 @@
+    // .matches(/[A-Za-z0-9@\.\-_$\*\(\)#@!%].*?/).withMessage("Password must contain numbers and characters")

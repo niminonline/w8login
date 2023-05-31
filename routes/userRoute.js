@@ -79,7 +79,7 @@ user_route.post("/edit",upload.single("image"),[
     .normalizeEmail({gmail_remove_dots:false})
     .isEmail()
     .custom(async (value)=>{
-        console.log("MOre email?  ="+validator.isDuplicateEmail(value));
+        console.log("Duplicate email?  ="+validator.isDuplicateEmail(value));
         if( await userController.isMoreEmailExist(value)){
             throw Error("Entered email already exist")}
             else

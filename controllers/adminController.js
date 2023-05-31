@@ -5,22 +5,15 @@ const { validationResult } = require("express-validator");
 const fs= require("fs");
 const validator =require("../middleware/validator")
 
-
-
-
-
 //==================Admin Login Page==================
 const adminLogin = async(req,res)=>{
-
     try{
         res.render("login");
 
     }
     catch(err){
         console.log(err.message);
-
     }
-
 }
 //==========================VerifyLogin===================
 const verifyLogin = async(req,res)=>{
@@ -52,9 +45,7 @@ const verifyLogin = async(req,res)=>{
     }
     catch(err){
         console.log(err.message);
-
     }
-
 }
 //============================Admin Dashboard=========================//
 
@@ -89,7 +80,6 @@ const logout = async(req,res)=>{
         delete req.session.admin_id;
         // req.session.destroy();
         res.redirect("/admin");
-
     }
 
     catch(err){
@@ -101,18 +91,14 @@ const logout = async(req,res)=>{
 const loadAddUser = async(req,res)=>{
 
     try{
-
         res.render("adduser");
     }
     catch(err){
         console.log(err.message);
     }
-
 }
 
 //===================================Add User============================//
-
-
 
 const addUser= async(req,res)=>{
     try{
@@ -121,7 +107,6 @@ const addUser= async(req,res)=>{
             console.log(errors);
             res.render("adduser",{errors:errors.array()})
             }
-
         else{
 
         const secPassword= await bcrypt.hash(req.body.password,10);
@@ -134,14 +119,11 @@ const addUser= async(req,res)=>{
 
         if(req.file){
              newUser= await new User({name:name,email:email,mobile:mobile,password:password,image:req.file.filename});
-
         }    
         else
         {
              newUser= await new User({name:name,email:email,mobile:mobile,password:password});
         }
-    
-
        const opUserAdd= await newUser.save();
         if(opUserAdd)
         {
@@ -215,8 +197,6 @@ const updateUser= async (req,res)=>{
     
     }
     else{
-
-      
         const name=req.body.name;
         const email= req.body.email;
         const mobile= req.body.mobile;
@@ -229,7 +209,6 @@ const updateUser= async (req,res)=>{
         console.log(err.message);
     }
 }
-
 
 module.exports= {adminLogin, verifyLogin,adminDashboard, logout,loadAddUser,
                 addUser,removeUser,loadEdit,updateUser}

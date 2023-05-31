@@ -3,6 +3,7 @@ const bcrypt= require("bcrypt");
 const { log } = require("console");
 const { validationResult } = require("express-validator");
 const fs= require("fs");
+const validator =require("../middleware/validator")
 
 
 
@@ -112,48 +113,9 @@ const loadAddUser = async(req,res)=>{
 //===================================Add User============================//
 
 
-const isEmailExist = async(enteredEmail)=>{
-    try{
-
-        const emailFound= await User.findOne({email:enteredEmail});
-    //console.log(emailFound);
-    if(emailFound){
-        return true;
-    }
-    else
-    return false;
-    }
-    catch(err){
-    console.log(err.message);
-    }
-    }
-const isDuplicateEmail=async (req)=>{
-
-    try{
-        const userData = await User.findOne({email:req.body.email});
-    if(userData){
-        console.log("req:"+userData.id.trim()+"db :"+req.body.id.trim());
-        if(userData._id != req.body.id){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    else{
-        return false;
-    }
-
-    }
-    catch(err){
-        console.log(err.message);
-    }
-}
 
 const addUser= async(req,res)=>{
     try{
-
-        
         const errors=  validationResult(req);
         if(!errors.isEmpty()){
             console.log(errors);
@@ -167,17 +129,28 @@ const addUser= async(req,res)=>{
         const email=req.body.email;
         const mobile=req.body.mobile;
         const password=secPassword;
-        const useOne= new User({name:name,email:email,mobile:mobile,password:password});
-        
-       const opUserAdd= await useOne.save();
+        //console.log("file:"+req.file);
+        let newUser;
+
+        if(req.file){
+             newUser= await new User({name:name,email:email,mobile:mobile,password:password,image:req.file.filename});
+
+        }    
+        else
+        {
+             newUser= await new User({name:name,email:email,mobile:mobile,password:password});
+        }
+    
+
+       const opUserAdd= await newUser.save();
         if(opUserAdd)
         {
          
        res.redirect("/admin/home");}
        else
        res.render("adduser",{message:"User add failed"})
-        
-    }}
+        }
+    }
     catch(err){
         console.log(err.message);
     }
@@ -260,4 +233,4 @@ const updateUser= async (req,res)=>{
 
 
 module.exports= {adminLogin, verifyLogin,adminDashboard, logout,loadAddUser,
-                addUser,removeUser,loadEdit,updateUser,isEmailExist,isDuplicateEmail}
+                addUser,removeUser,loadEdit,updateUser}

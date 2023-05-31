@@ -12,7 +12,7 @@ const config= require("../config/config");
 const session = require("express-session");
 user_route.use(session({secret:config.sessionSecret,resave:false,saveUninitialized:false}));
 const auth= require("../middleware/auth");
-const validate = require("../middleware/validator")
+const validator = require("../middleware/validator")
 
 
 
@@ -37,7 +37,7 @@ user_route.post('/register', upload.single("image"),[
     .normalizeEmail({gmail_remove_dots:false})
     .isEmail()
     .custom(async(value)=>{
-        const result=await userController.isEmailExist(value)
+        const result=await validator.isEmailExist(value)
         console.log(result);  
         if(result){
             throw new Error("Email already exists");
@@ -77,7 +77,7 @@ user_route.post("/edit",upload.single("image"),[
     .normalizeEmail({gmail_remove_dots:false})
     .isEmail()
     .custom(async (value)=>{
-        console.log("MOre email?  ="+userController.isMoreEmailExist(value));
+        console.log("MOre email?  ="+validator.isDuplicateEmail(value));
         if( await userController.isMoreEmailExist(value)){
             throw Error("Entered email already exist")}
             else

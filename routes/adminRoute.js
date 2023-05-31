@@ -75,7 +75,7 @@ admin_route.post("/useredit",[
     .normalizeEmail({gmail_remove_dots:false})
     .isEmail()
     .custom(async (value,{req})=>{
-        const result= await adminController.isDuplicateEmail(req);
+        const result= await validator.isDuplicateEmail(req);
         console.log("More email?  ="+result);
         if(result){
             throw Error("Entered email already exist")}

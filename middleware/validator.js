@@ -38,6 +38,19 @@ const isDuplicateEmail=async (req)=>{
     }
 }
 
+const isValidationError = async(req)=>{
+    try{
+        const errors=  validationResult(req);
+        if(!errors.isEmpty()){
+            return errors.array();
+            }
+            else
+            return false
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
 
 
 
@@ -110,4 +123,4 @@ const validation=()=>{
 ]
 }
 
-module.exports ={allValidation,validateNameEmailMobile,validation, isEmailExist,isDuplicateEmail}
+module.exports ={allValidation,validateNameEmailMobile,validation, isEmailExist,isDuplicateEmail,isValidationError}

@@ -10,8 +10,12 @@
 
 <div class="card my-4" style="width: 18rem;" my-3>
 
-    <img src=  "userImages/<%= userDetails.image %> " class="card-img-top"  alt="Profile pic"> </td>
-       
+    <%if(!userDetails.image){%>
+        <img src=  "userImages/default/user.jpeg" class="card-img-top"  alt="Profile pic" wwidth="200px" height="200px"> </td>
+   <% }else{ %> 
+
+    <img src=  "userImages/<%= userDetails.image %> " class="card-img-top" width="200px" height="200px" alt="Profile pic"> </td>
+  <% }%>       
     <div class="card-body ">
     <table>
         

@@ -13,6 +13,7 @@ const session = require("express-session");
 user_route.use(session({secret:config.sessionSecret,resave:false,saveUninitialized:false}));
 const auth= require("../middleware/auth");
 const validator = require("../middleware/validator")
+const {noCache} = require("../middleware/routingMW")
 
 
 
@@ -26,6 +27,7 @@ const upload=multer({storage:storage});
 
 const {body,validationResult}= require("express-validator");
 const { error } = require("console");
+//========================User Route=============================
 
 user_route.get('/register', auth.isLogin, userController.loadRegister);
 user_route.post('/register', upload.single("image"),[
@@ -61,11 +63,11 @@ user_route.post('/register', upload.single("image"),[
 
 ],userController.insertUser);
 
-
-user_route.get("/login", auth.isLogin, userController.loginLoad);
-user_route.get("/", auth.isLogin,userController.loginLoad);
+ 
+user_route.get("/login", auth.isLogin,noCache, userController.loginLoad);
+user_route.get("/",auth.isLogin,noCache,userController.loginLoad);
 user_route.post("/login", userController.verifyLogin);
-user_route.get("/home",auth.isLogout, userController.loadHome);
+user_route.get("/home", auth.isLogout,noCache, userController.loadHome);
 user_route.get("/logout",auth.isLogout, userController.userLogout);
 user_route.get("/edit",auth.isLogout, userController.editProfile);
 user_route.post("/edit",upload.single("image"),[

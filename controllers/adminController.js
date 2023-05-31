@@ -158,26 +158,25 @@ const addUser= async(req,res)=>{
 //============================Remove User===============================
 
 const removeFile= async (file_name)=>{
-    console.log("To delete- "+file_name);
-    if(fs.existsSync(file_name)){
-        fs.unlinkSync(file_name);
-    }
-    else{
-        console.log("File not found");
-    }
+    const filename= "public"+ usrData.image;
+        console.log("File to delete:"+filename);
+        fs.unlink(filename,(err)=>{
+            if (err) {
+                console.error('Error deleting file:', err);
+              } else {
+                console.log('File deleted successfully');
+              }
+        })
 
 }
 
 const removeUser= async(req,res)=>{
+
     try{
         const id= req.query.id;
         const usrData= await User.findOne({_id:id});
-        // console.log(usrData.image);
+        
         await User.deleteOne({_id:id});
-        // const fileToRemove= "userImages/"+ usrData.image
-        // removeFile(fileToRemove);
-        
-        
         res.redirect("/admin/home");
        
     }

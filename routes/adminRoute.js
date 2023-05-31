@@ -8,6 +8,7 @@ const auth= require("../middleware/auth");
 const {body,validationResult}= require("express-validator");
 const path= require("path");    
 const validator= require("../middleware/validator")
+const {noCache} = require("../middleware/routingMW")
 
 
 
@@ -27,10 +28,12 @@ const storage= multer.diskStorage({destination:(req,file,cb)=>{cb(null,path.join
                                     }});
 const upload=multer({storage:storage});
 
-admin_route.get("/",auth.isAdminLogin, adminController.adminLogin)
-admin_route.get("/login",auth.isAdminLogin, adminController.adminLogin)
-admin_route.get("/home",auth.isAdminLogout,adminController.adminDashboard)
-admin_route.post("/login",adminController.verifyLogin)
+//=======================Routing===========
+
+admin_route.get("/",auth.isAdminLogin,noCache, adminController.adminLogin)
+admin_route.get("/login",auth.isAdminLogin,noCache, adminController.adminLogin)
+admin_route.get("/home",auth.isAdminLogout,noCache, adminController.adminDashboard)
+admin_route.post("/login", adminController.verifyLogin)
 admin_route.get("/logout",adminController.logout)
 admin_route.get("/adduser",auth.isAdminLogout,adminController.loadAddUser)
 admin_route.post("/adduser",upload.single("image"),
@@ -87,13 +90,9 @@ admin_route.post("/useredit",[
     .trim()
     .isNumeric().withMessage('Mobile number contains invalid characters')
     .isLength({min:10,max:10}).withMessage('Mobile number must contain 10 digits')
-
-
 ],adminController.updateUser);
 
 
-// admin_route.get("*",(req,res)=>{
-//     res.redirect("/admin");
-// })
+
 module.exports= admin_route;
 

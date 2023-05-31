@@ -68,7 +68,22 @@ const insertUser= async(req,res)=>{
         console.log(err);
 
     }}
-//==============================Login===============================
+//==============================Root Load===============================
+
+// const rootLoad= async (req,res)=>{
+
+//     try{
+        
+//         res.redirect("/login");
+
+//     }
+//     catch(err){
+//         console.log(err.message);
+//     }
+// }
+
+//====================Login load====================
+
 
 const loginLoad= async (req,res)=>{
 

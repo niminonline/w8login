@@ -1,7 +1,9 @@
 const User= require("../models/userModel");
 const bcrypt= require("bcrypt");
 const { log } = require("console");
+const { validationResult } = require("express-validator");
 const fs= require("fs");
+
 
 
 
@@ -93,7 +95,7 @@ const logout = async(req,res)=>{
         console.log(err.message);
     }
 }
-//===================================Add User============================//
+//=================================== Load Add User============================//
 
 const loadAddUser = async(req,res)=>{
 
@@ -107,8 +109,59 @@ const loadAddUser = async(req,res)=>{
 
 }
 
+//===================================Add User============================//
+
+
+const isEmailExist = async(enteredEmail)=>{
+    try{
+
+        const emailFound= await User.findOne({email:enteredEmail});
+    //console.log(emailFound);
+    if(emailFound){
+        return true;
+    }
+    else
+    return false;
+    }
+    catch(err){
+    console.log(err.message);
+    }
+    }
+const isDuplicateEmail=async (req)=>{
+
+    try{
+        const userData = await User.findOne({email:req.body.email});
+    if(userData){
+        console.log("req:"+userData.id.trim()+"db :"+req.body.id.trim());
+        if(userData._id != req.body.id){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
 const addUser= async(req,res)=>{
     try{
+
+        
+        const errors=  validationResult(req);
+        if(!errors.isEmpty()){
+            console.log(errors);
+            res.render("adduser",{errors:errors.array()})
+            }
+
+        else{
+
         const secPassword= await bcrypt.hash(req.body.password,10);
         const name=req.body.name;
         const email=req.body.email;
@@ -123,8 +176,8 @@ const addUser= async(req,res)=>{
        res.redirect("/admin/home");}
        else
        res.render("adduser",{message:"User add failed"})
-
-    }
+        
+    }}
     catch(err){
         console.log(err.message);
     }
@@ -146,10 +199,10 @@ const removeUser= async(req,res)=>{
     try{
         const id= req.query.id;
         const usrData= await User.findOne({_id:id});
-        console.log(usrData.image);
+        // console.log(usrData.image);
         await User.deleteOne({_id:id});
-        const fileToRemove= "userImages/"+ usrData.image
-        removeFile(fileToRemove);
+        // const fileToRemove= "userImages/"+ usrData.image
+        // removeFile(fileToRemove);
         
         
         res.redirect("/admin/home");
@@ -166,7 +219,7 @@ const loadEdit= async(req,res)=>{
         message="";
         const userData= await  User.findOne({_id:id});
                 
-        res.render("useredit",{userData:userData});
+        res.render("useredit",{data:{userData:userData,errors:[]}});
        
         }
     
@@ -177,8 +230,21 @@ const loadEdit= async(req,res)=>{
 //=======================================Update User=============================
 const updateUser= async (req,res)=>{
 
+
+
     try{
-        const id=req.body.id;
+        const id= req.body.id;
+        const userData= await User.findById({_id:id});
+    
+    const errors= validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors);
+        res.render("useredit",{data:{userData:userData,errors:errors.array()}});
+    
+    }
+    else{
+
+      
         const name=req.body.name;
         const email= req.body.email;
         const mobile= req.body.mobile;
@@ -186,10 +252,12 @@ const updateUser= async (req,res)=>{
         await User.updateOne({_id:id},{$set:{name:name,email:email,mobile:mobile}})
         res.redirect("/admin/home")
     }
+}
     catch(err){
         console.log(err.message);
     }
 }
 
 
-module.exports= {adminLogin, verifyLogin,adminDashboard, logout,loadAddUser,addUser,removeUser,loadEdit,updateUser}
+module.exports= {adminLogin, verifyLogin,adminDashboard, logout,loadAddUser,
+                addUser,removeUser,loadEdit,updateUser,isEmailExist,isDuplicateEmail}

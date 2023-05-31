@@ -69,10 +69,25 @@ user_route.get("/home",auth.isLogout, userController.loadHome);
 user_route.get("/logout",auth.isLogout, userController.userLogout);
 user_route.get("/edit",auth.isLogout, userController.editProfile);
 user_route.post("/edit",upload.single("image"),[
-    body("email")
+    body("name").trim()
+    .matches(/^[A-Za-z\s]+$/).withMessage("Username cannot contain invalid characters")
+    .isLength({min:3}).withMessage('Name must contain atleat 3 characters'),
+    body("email","Invalid email address")
+    .trim()
+    .normalizeEmail({gmail_remove_dots:false})
+    .isEmail()
+    .custom(async (value)=>{
+        console.log("MOre email?  ="+userController.isMoreEmailExist(value));
+        if( await userController.isMoreEmailExist(value)){
+            throw Error("Entered email already exist")}
+            else
+            return true;    
+    }) ,
+    body("mobile")
+    .trim()
+    .isNumeric().withMessage('Mobile number contains invalid characters')
+    .isLength({min:10,max:10}).withMessage('Mobile number must contain 10 digits')
 ]
-
-
 , userController.update);
 user_route.get("/changepassword",auth.isLogout, userController.loadChangePassword);
 user_route.post("/changepassword",userController.changePassword);

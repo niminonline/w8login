@@ -1,3 +1,47 @@
+const User= require("../models/userModel")
+
+const isEmailExist = async(enteredEmail)=>{
+    try{
+
+        const emailFound= await User.findOne({email:enteredEmail});
+    //console.log(emailFound);
+    if(emailFound){
+        return true;
+    }
+    else
+    return false;
+    }
+    catch(err){
+    console.log(err.message);
+    }
+    }
+const isDuplicateEmail=async (req)=>{
+
+    try{
+        const userData = await User.findOne({email:req.body.email});
+    if(userData){
+        console.log("req:"+userData.id.trim()+"db :"+req.body.id.trim());
+        if(userData._id != req.body.id){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
+
+
+
+
 
 const allValidation= ()=>{
     return
@@ -66,4 +110,4 @@ const validation=()=>{
 ]
 }
 
-module.exports ={allValidation,validateNameEmailMobile,validation}
+module.exports ={allValidation,validateNameEmailMobile,validation, isEmailExist,isDuplicateEmail}

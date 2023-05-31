@@ -2,22 +2,36 @@
 
 <div class="card myCard-center">
     <h1 class="card-header" >Edit User</h1>
+
+    <%if(typeof data.errors!= 'undefined'){%>
+        <%data.errors.map(item=>{ %>
+      
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> <%=item.msg%>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    
+    <%})}%>
+
+
+
+
     <div class="card-body">
         <form action="" method="post">
-            <input type="hidden" name="id" value="<%=userData._id%>">
+            <input type="hidden" name="id" value="<%=data.userData._id%>">
             <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" value="<%=userData.name%>" placeholder="Enter new name" required>
+            <input type="text" class="form-control" name="name" value="<%=data.userData.name%>" placeholder="Enter new name" required>
             <br>
             <label for="email">Email</label>
-           <input type="email" class="form-control" name="email" value="<%=userData.email%>" placeholder="Enter new email" required>
+           <input type="email" class="form-control" name="email" value="<%=data.userData.email%>" placeholder="Enter new email" required>
             <br>
             <label for="mobile">Mobile</label>
-            <input type="text" class="form-control" name="mobile" value="<%=userData.mobile%>" placeholder="Enter new mobile number" required>
+            <input type="text" class="form-control" name="mobile" value="<%=data.userData.mobile%>" placeholder="Enter new mobile number" required>
             <br>
             <input type="submit" class="btn btn-primary" value="Update">
             <a href="/admin/home" class="btn btn-primary">Cancel</a>
         
-            <p><%=message%></p>
+            
         
         </form>
     </div>

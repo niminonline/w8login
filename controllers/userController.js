@@ -34,8 +34,6 @@ const insertUser= async(req,res)=>{
     try{
 
 
-        
-
         const valErrors= validationResult(req);
         if(!valErrors.isEmpty()){
         //   const errors= valError.array();
@@ -95,6 +93,17 @@ const isEmailExist = async(enteredEmail)=>{
     }
     else
     return false;
+}
+
+const isMoreEmailExist=async (enteredEmail)=>{
+    const emailCount = await User.find({email:enteredEmail}).count();
+    console.log("email count"+ emailCount);
+    if (emailCount>1)
+    return true;
+    else
+    return false;
+
+
 }
 
 const verifyLogin = async(req,res)=>{
@@ -157,6 +166,8 @@ const userLogout = async(req,res,next)=>{
 }
 
 //===========================Edit Profile=================//
+
+
 const editProfile= async(req,res)=>{
 
     try{
@@ -164,7 +175,7 @@ const editProfile= async(req,res)=>{
             const userData= await User.findById({_id:id});
 
         if(userData){
-           res.render("edit",{user:userData})
+           res.render("edit",{data:{user:userData,errors:[]}})
         }
         else{
             res.redirect("/home")
@@ -175,9 +186,24 @@ const editProfile= async(req,res)=>{
     }
 }
 //=========================Update profile===============//
+
+
+
 const update = async(req,res)=>{
 
+
     try{
+
+        const id= req.body.user_id;
+            const userData= await User.findById({_id:id});
+
+        const errors= validationResult(req);
+        if(!errors.isEmpty()){
+            console.log(errors);
+            res.render("edit",{data:{user:userData,errors:errors.array()}});
+    
+        }
+        else{
         if(req.file){
             const userdate=  await User.findByIdAndUpdate({_id:req.body.user_id},{$set:{name: req.body.name,email: req.body.email,mobile:req.body.mobile,image:req.file.filename }})
         }    
@@ -187,6 +213,7 @@ const update = async(req,res)=>{
         }
         res.redirect("/home")
     }
+}
     catch(err){
         console.log(err.message);
     }
@@ -246,4 +273,4 @@ const changePassword= async(req,res)=>{
 
 
 module.exports= { loadRegister, insertUser,loginLoad,verifyLogin,loadHome,userLogout,editProfile,update,
-                  loadChangePassword,changePassword,isEmailExist}
+                  loadChangePassword,changePassword,isEmailExist,isMoreEmailExist}

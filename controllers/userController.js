@@ -239,7 +239,8 @@ const loadChangePassword= async(req,res)=>{
 
     try{
         const message="";
-        const id=req.query.id;
+        let id=req.query.id;
+       
        res.render("changepassword",{data:{_id:id,message:""}});
     }
     catch(err){
@@ -251,35 +252,39 @@ const loadChangePassword= async(req,res)=>{
 const changePassword= async(req,res)=>{
     try{
         const id= req.body.id;
+        const errors=  validationResult(req);
+        if(!errors.isEmpty()){
+            console.log(errors);
+            res.render("changepassword",{data:{_id:req.body.id,message:"",errors:errors.array()}})
+            }
+        else{
+
+       
         const oldPassword= req.body.oldPassword;
         const newPassword= req.body.newPassword;
         const confirmPassword= req.body.confirmPassword;
 
         const userData= await User.findOne({_id:id});
-        console.log(userData);
+        // console.log(userData);
+        if( await bcrypt.compare(oldPassword,userData.password)){
         if(userData){
-            console.log("stored pass "+ userData.password);
-            if( await bcrypt.compare(oldPassword,userData.password)){
-                if(newPassword===confirmPassword){
-                  
                     const secPassword= await bcrypt.hash(newPassword,10);
                     if(secPassword){
                         await User.updateOne({_id:id},{$set:{password:secPassword}});
-                        res.redirect("home");
+                        res.redirect("/home");
                     }
                     else{
                     res.render("changepassword",{data:{_id:id,message:"Password updation failed"}});
-                    }
-                }
-                else{
-                    res.render("changepassword",{data:{_id:id,message:"New password and confirm password doesn't match"}});
-                }
-                
             }
-            res.render("changepassword",{data:{_id:id,message:"Old password is wrong"}});
-        }
-        res.render("changepassword",{data:{_id:id,message:"db fetch failed"}});
+           
     }
+    else
+    res.render("changepassword",{data:{_id:id,message:"DB fetch failed"}});
+        }
+        else
+        res.render("changepassword",{data:{_id:id,message:"Invalid Current Password"}});
+
+}}
     catch(err){
         console.log(err.message);
     }

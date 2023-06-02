@@ -153,14 +153,7 @@ const validateNameEmailMobile =()=>{
     ]
 }
 
-const validation=()=>{
-[
 
 
-
-    
-]
-}
-
-module.exports ={allValidation,validateNameEmailMobile,validation, isEmailExist,isDuplicateEmail,
+module.exports ={allValidation,validateNameEmailMobile, isEmailExist,isDuplicateEmail,
     isValidationError,isMobileExist,isDuplicateMobile}

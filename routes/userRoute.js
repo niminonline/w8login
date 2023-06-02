@@ -110,6 +110,17 @@ user_route.post("/edit",upload.single("image"),[
 ]
 , userController.update);
 user_route.get("/changepassword",auth.isLogout, userController.loadChangePassword);
-user_route.post("/changepassword",userController.changePassword);
+user_route.post("/changepassword",[
+    body("newPassword")
+    .isLength({min:8}).withMessage("Password must contain atleat 8 characters")
+    .custom((value,{req})=>{
+        if(value!==req.body.confirmPassword){
+            throw new Error("Passwords do not match");
+        }
+        return true;
+    })
+
+    
+],userController.changePassword);
 module.exports= user_route;
 

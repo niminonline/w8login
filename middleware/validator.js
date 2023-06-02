@@ -4,7 +4,6 @@ const isEmailExist = async(enteredEmail)=>{
     try{
 
         const emailFound= await User.findOne({email:enteredEmail});
-    //console.log(emailFound);
     if(emailFound){
         return true;
     }
@@ -37,6 +36,46 @@ const isDuplicateEmail=async (req)=>{
         console.log(err.message);
     }
 }
+
+
+
+const isMobileExist = async(enteredMobile)=>{
+    try{
+
+        const mobileFound= await User.findOne({mobile:enteredMobile});
+    if(mobileFound){
+        return true;
+    }
+    else
+    return false;
+    }
+    catch(err){
+    console.log(err.message);
+    }
+    }
+const isDuplicateMobile=async (req)=>{
+
+    try{
+        const userData = await User.findOne({mobile:req.body.mobile});
+    if(userData){
+        console.log("req:"+userData.id.trim()+"db :"+req.body.id.trim());
+        if(userData._id != req.body.id){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
 
 const isValidationError = async(req)=>{
     try{
@@ -123,4 +162,5 @@ const validation=()=>{
 ]
 }
 
-module.exports ={allValidation,validateNameEmailMobile,validation, isEmailExist,isDuplicateEmail,isValidationError}
+module.exports ={allValidation,validateNameEmailMobile,validation, isEmailExist,isDuplicateEmail,
+    isValidationError,isMobileExist,isDuplicateMobile}

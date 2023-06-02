@@ -50,7 +50,17 @@ user_route.post('/register', upload.single("image"),[
     body("mobile")
     .trim()
     .isNumeric().withMessage('Mobile number contains invalid characters')
-    .isLength({min:10,max:10}).withMessage('Mobile number must contain 10 digits'),
+    .isLength({min:10,max:10}).withMessage('Mobile number must contain 10 digits')
+    .custom(async(value)=>{
+        const result=await  validator.isMobileExist(value)
+        console.log(result);  
+        if(result){
+            throw new Error("Mobile number already exists");
+        }
+        else{
+
+           return true
+        }}),
     body("password")
     .isLength({min:8}).withMessage("Password must contain atleat 8 characters")
     .custom((value,{req})=>{
@@ -89,6 +99,14 @@ user_route.post("/edit",upload.single("image"),[
     .trim()
     .isNumeric().withMessage('Mobile number contains invalid characters')
     .isLength({min:10,max:10}).withMessage('Mobile number must contain 10 digits')
+    .custom(async (value,{req})=>{
+        const result= await validator.isDuplicateMobile(req);
+        console.log("More phone#  ="+result);
+        if(result){
+            throw Error("Entered Mobile number already exist")}
+            else
+            return true;
+    }) 
 ]
 , userController.update);
 user_route.get("/changepassword",auth.isLogout, userController.loadChangePassword);
